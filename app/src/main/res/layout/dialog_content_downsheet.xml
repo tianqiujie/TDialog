@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/downSheet_header_ll"
+        android:background="@drawable/bg_actionsheet_header"
+        android:layout_weight="1.0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="标题"
+            android:id="@+id/downSheet_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_downSheet_title"
+            android:gravity="center"
+            android:textColor="@color/textColor_downSheet_title"
+            android:textSize="18sp" />
+
+        <TextView
+            android:text="内容"
+            android:id="@+id/downSheet_msg_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginBottom_downSheet_msg"
+            android:gravity="center"
+            android:textColor="@color/textColor_downSheet_msg"
+            android:textSize="@dimen/textSize_downSheet_msg" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/downSheet_content_rv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/downSheet_Cancel_tv"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/margin_downSheet_left_right"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_item_content"
+        android:gravity="center"
+        android:clickable="true"
+        android:background="@drawable/bg_actionsheet_cancel"
+        android:textColor="@color/textColor_alert_button_cancel"
+        android:textStyle="bold"
+        android:textSize="@dimen/textSize_item_content" />
+</LinearLayout>
