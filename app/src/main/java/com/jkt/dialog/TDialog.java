@@ -34,32 +34,46 @@ public class TDialog {
     private List<String> mList;
     private String mTitle;
     private String mMsg;
+    private onItemClickListener mItemClickListener;
+    private onDismissListener mDismissListener;
+    private boolean mCancelable;
 
-    public TDialog(@NonNull Activity activity, Style style, List<String> contentList, String title, String msg) {
-        initParams(activity, style, contentList, title, msg);
-        initViews();
-        initContentView();
-
+    public void setDismissListener(onDismissListener dismissListener) {
+        mDismissListener = dismissListener;
     }
 
-    public TDialog(@NonNull Activity activity, Style style, String[] contentArray, String title, String msg) {
-        initParams(activity, style, Arrays.asList(contentArray), title, msg);
-        initViews();
-        initContentView();
-
+    public void setCancelable(boolean cancelable) {
+        mCancelable = cancelable;
     }
 
-    private void initParams(Activity activity, Style style, List<String> contentList, String title, String msg) {
+    public TDialog(@NonNull Activity activity, Style style, String[] contentArray, String title, String msg, onItemClickListener onItemClickListener) {
+        initParams(activity, style, Arrays.asList(contentArray), title, msg, onItemClickListener);
+        initViews();
+        initContentView();
+    }
+
+    private void initParams(Activity activity, Style style, List<String> contentList, String title, String msg, onItemClickListener anInterface) {
         mActivity = activity;
         mStyle = style == null ? Style.Center : style;
         mList = contentList;
         mTitle = title;
         mMsg = msg;
+        mItemClickListener = anInterface;
+        mCancelable=mStyle==Style.Center;
+
     }
 
     private void initViews() {
         mDecorView = (ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         mRootView = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.dialog_root, mDecorView, false);
+        mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCancelable) {
+                    dismiss();
+                }
+            }
+        });
     }
 
     private void initContentView() {
@@ -122,32 +136,73 @@ public class TDialog {
         RecyclerView rv = (RecyclerView) mRootView.findViewById(rvId);
         LinearLayout ll = (LinearLayout) mRootView.findViewById(R.id.center_content_ll);
         if (mStyle.equals(Style.Center) && mList != null && mList.size() == 2) {
-            rv.setVisibility(View.GONE);
-            for (int i = 0; i < 2; i++) {
-                View item = mActivity.getLayoutInflater().inflate(R.layout.dialog_item, null);
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) item.getLayoutParams();
-                TextView textView = (TextView) item.findViewById(R.id.dialog_item_tv);
-                textView.setText(mList.get(i));
-                ll.addView(item, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-                if (i == 0) {
-                    View divider = new View(mActivity);
-                    divider.setBackgroundColor(mActivity.getResources().getColor(R.color.bgColor_divier));
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            (int) mActivity.getResources().getDimension(R.dimen.size_divider_line),
-                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    ll.addView(divider, params);
-                }
-                if (i == 1) {
-                }
-            }
+            twoItemWork(rv, ll);
         } else {
+            otherItemWork(rv, ll);
+        }
+    }
+
+
+    private void twoItemWork(RecyclerView rv, LinearLayout ll) {
+        rv.setVisibility(View.GONE);
+        for (int i = 0; i < 2; i++) {
+            View item = mActivity.getLayoutInflater().inflate(R.layout.dialog_item, null);
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) item.getLayoutParams();
+            TextView textView = (TextView) item.findViewById(R.id.dialog_item_tv);
+            textView.setText(mList.get(i));
+            ll.addView(item, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+            if (i == 0) {
+                View divider = new View(mActivity);
+                divider.setBackgroundColor(mActivity.getResources().getColor(R.color.bgColor_divier));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        (int) mActivity.getResources().getDimension(R.dimen.size_divider_line),
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                ll.addView(divider, params);
+            }
+            if (i == 1) {
+            }
+            final int finalI = i;
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(TDialog.this, finalI);
+                    }
+                    dismiss();
+                }
+            });
+
+        }
+    }
+
+    private void otherItemWork(RecyclerView rv, LinearLayout ll) {
+        if (mStyle == Style.Center) {
             ll.setVisibility(View.GONE);
-            rv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
-            DialogAdapter adapter = new DialogAdapter(mActivity);
-            adapter.setList(mList);
-            rv.setLayoutManager(new LinearLayoutManager(mActivity));
-            rv.setAdapter(adapter);
+        }
+        rv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+        DialogAdapter adapter = new DialogAdapter(mActivity);
+        adapter.setList(mList);
+        rv.setLayoutManager(new LinearLayoutManager(mActivity));
+        rv.setAdapter(adapter);
+        adapter.setOnItemClickListener(new DialogAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(TDialog.this, position);
+                }
+                dismiss();
+            }
+        });
+        if (mStyle == Style.DownSheet) {
+            TextView textView = (TextView) mContentView.findViewById(R.id.downSheet_Cancel_tv);
+            textView.setText("取消");
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
         }
     }
 
@@ -155,4 +210,18 @@ public class TDialog {
         mDecorView.addView(mRootView);
     }
 
+    public void dismiss() {
+        mDecorView.removeView(mRootView);
+        if (mDismissListener != null) {
+            mDismissListener.onDismissClick(this);
+        }
+    }
+
+    public interface onItemClickListener {
+        void onItemClick(Object object, int position);
+    }
+
+    public interface onDismissListener {
+        void onDismissClick(Object object);
+    }
 }

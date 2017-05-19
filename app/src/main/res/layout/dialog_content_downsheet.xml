@@ -38,8 +38,8 @@
 
     <TextView
         android:id="@+id/downSheet_Cancel_tv"
-        android:visibility="gone"
         android:layout_marginTop="@dimen/margin_downSheet_left_right"
+        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_item_content"
         android:gravity="center"
