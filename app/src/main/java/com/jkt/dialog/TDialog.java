@@ -1,6 +1,7 @@
 package com.jkt.dialog;
 
 import android.app.Activity;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,10 @@ import java.util.List;
  * Created by 天哥哥 at 2017/5/19 9:58
  */
 public class TDialog {
+
+    private TextView mCancelTV;
+    private DialogAdapter mAdapter;
+
     public enum Style {
         Center, DownSheet
     }
@@ -38,13 +43,6 @@ public class TDialog {
     private onDismissListener mDismissListener;
     private boolean mCancelable;
 
-    public void setDismissListener(onDismissListener dismissListener) {
-        mDismissListener = dismissListener;
-    }
-
-    public void setCancelable(boolean cancelable) {
-        mCancelable = cancelable;
-    }
 
     public TDialog(@NonNull Activity activity, Style style, String[] contentArray, String title, String msg, onItemClickListener onItemClickListener) {
         initParams(activity, style, Arrays.asList(contentArray), title, msg, onItemClickListener);
@@ -59,7 +57,7 @@ public class TDialog {
         mTitle = title;
         mMsg = msg;
         mItemClickListener = anInterface;
-        mCancelable=mStyle==Style.Center;
+        mCancelable = mStyle == Style.Center;
 
     }
 
@@ -70,7 +68,7 @@ public class TDialog {
             @Override
             public void onClick(View v) {
                 if (mCancelable) {
-                    dismiss();
+                    dismiss(true);
                 }
             }
         });
@@ -153,6 +151,7 @@ public class TDialog {
             ll.addView(item, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             if (i == 0) {
+                textView.setBackgroundResource(R.drawable.bg_left);
                 View divider = new View(mActivity);
                 divider.setBackgroundColor(mActivity.getResources().getColor(R.color.bgColor_divier));
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -161,6 +160,7 @@ public class TDialog {
                 ll.addView(divider, params);
             }
             if (i == 1) {
+                textView.setBackgroundResource(R.drawable.bg_right);
             }
             final int finalI = i;
             textView.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +169,7 @@ public class TDialog {
                     if (mItemClickListener != null) {
                         mItemClickListener.onItemClick(TDialog.this, finalI);
                     }
-                    dismiss();
+                    dismiss(false);
                 }
             });
 
@@ -181,26 +181,26 @@ public class TDialog {
             ll.setVisibility(View.GONE);
         }
         rv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
-        DialogAdapter adapter = new DialogAdapter(mActivity);
-        adapter.setList(mList);
+        mAdapter = new DialogAdapter(mActivity);
+        mAdapter.setList(mList);
         rv.setLayoutManager(new LinearLayoutManager(mActivity));
-        rv.setAdapter(adapter);
-        adapter.setOnItemClickListener(new DialogAdapter.onItemClickListener() {
+        rv.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new DialogAdapter.onItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (mItemClickListener != null) {
                     mItemClickListener.onItemClick(TDialog.this, position);
                 }
-                dismiss();
+                dismiss(false);
             }
         });
         if (mStyle == Style.DownSheet) {
-            TextView textView = (TextView) mContentView.findViewById(R.id.downSheet_Cancel_tv);
-            textView.setText("取消");
-            textView.setOnClickListener(new View.OnClickListener() {
+            mCancelTV = (TextView) mContentView.findViewById(R.id.downSheet_Cancel_tv);
+            mCancelTV.setText("取消");
+            mCancelTV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismiss();
+                    dismiss(true);
                 }
             });
         }
@@ -210,12 +210,21 @@ public class TDialog {
         mDecorView.addView(mRootView);
     }
 
-    public void dismiss() {
+    public void dismiss(boolean cancelListener) {
         mDecorView.removeView(mRootView);
-        if (mDismissListener != null) {
+        if (mDismissListener != null&&cancelListener) {
             mDismissListener.onDismissClick(this);
         }
     }
+
+    public void setDismissListener(onDismissListener dismissListener) {
+        mDismissListener = dismissListener;
+    }
+
+    public void setCancelable(boolean cancelable) {
+        mCancelable = cancelable;
+    }
+
 
     public interface onItemClickListener {
         void onItemClick(Object object, int position);
@@ -224,4 +233,41 @@ public class TDialog {
     public interface onDismissListener {
         void onDismissClick(Object object);
     }
+
+    //--------------------------------样式扩展--------------------------------------------------------
+
+    public void setTitleColor(@ColorInt int color) {
+        mTitleTV.setTextColor(color);
+    }
+    public void setTitleSize(int dp) {
+        mTitleTV.setTextSize(dp);
+    }
+    public void setMsgColor(@ColorInt int color) {
+        mMsgTV.setTextColor(color);
+    }
+    public void setMsgSize(int dp) {
+        mMsgTV.setTextSize(dp);
+    }
+    public void setContentColor(@ColorInt int color) {
+        if (mAdapter!=null) {
+            mAdapter.setTextColor(color);
+        }
+    }
+    public void setContentSize(int dp) {
+        if (mAdapter!=null) {
+            mAdapter.setTextSize(dp);
+        }
+    }
+    public void setCancelTextColor(@ColorInt int color) {
+        if (mCancelTV!=null) {
+            mCancelTV.setTextColor(color);
+        }
+    }
+
+    public void setCancelTextSize(int dp) {
+        if (mCancelTV != null) {
+            mCancelTV.setTextSize(dp);
+        }
+    }
+
 }

@@ -13,10 +13,14 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String[] contentArray = {"111","22","333"};
-        mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, contentArray,
+        String[] contentArray = {"111","22","33"};
+        mTDialog = new TDialog(MainActivity.this, TDialog.Style.DownSheet, contentArray,
                 "自定义Dialog", "嘿嘿嘿", this);
         mTDialog.setDismissListener(this);
+        mTDialog.setTitleColor(getResources().getColor(R.color.bgColor_overlay));
+        mTDialog.setMsgSize(18);
+        mTDialog.setContentColor(getResources().getColor(R.color.bgColor_overlay));
+        mTDialog.setCancelTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     public void onClick(View view) {
