@@ -3,6 +3,7 @@ package com.jkt.dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements TDialog.onItemClickListener, TDialog.onDismissListener {
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                         "自定义样式,中间弹出", "点击外部区域可取消", this);
                 mTDialog.setItemTextColor(getResources().getColor(R.color.bgColor_overlay));
                 mTDialog.setMsgTextColor(getResources().getColor(R.color.colorAccent));
-                mTDialog.setItemTextColorAt(0,getResources().getColor(R.color.colorPrimary));
-                mTDialog.setItemTextColorAt(2,getResources().getColor(R.color.colorAccent));
-                mTDialog.setItemTextColorAt(10,getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColorAt(0, getResources().getColor(R.color.colorPrimary));
+                mTDialog.setItemTextColorAt(2, getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColorAt(10, getResources().getColor(R.color.colorAccent));
                 mTDialog.show();
                 break;
             case R.id.main_btn5:
@@ -72,10 +73,20 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
             case R.id.main_btn7:
                 mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, contentArray,
                         "更改边距", "通过外边距更改宽度", this);
-                mTDialog.setMargin(0,0,0,50);
+                mTDialog.setMargin(
+                        0, 0, 0, 50);
                 mTDialog.setDismissListener(this);
                 mTDialog.show();
                 break;
+            case R.id.main_btn8:
+                mTDialog = new TDialog(MainActivity.this, TDialog.Style.DownSheet, contentArray,
+                        "更改动画", "自定义动画,进行设置", this);
+                mTDialog.setInAnim(AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom1));
+                mTDialog.setOutAnim(AnimationUtils.loadAnimation(this,R.anim.slide_out_bottom1));
+                mTDialog.setDismissListener(this);
+                mTDialog.show();
+                break;
+
         }
     }
 
@@ -83,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
     public void onItemClick(Object object, int position) {
         if (object == mTDialog) {
             Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+            if (position == 0) {
+                mTDialog.dismissImmediately();
+            }
         }
     }
 

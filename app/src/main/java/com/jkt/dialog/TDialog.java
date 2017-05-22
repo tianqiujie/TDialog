@@ -10,12 +10,16 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.jkt.dialog.TDialog.Style.DownSheet;
 
 /**
  * Created by 天哥哥 at 2017/5/19 9:58
@@ -25,6 +29,9 @@ public class TDialog {
     private TextView mCancelTV;
     private DialogAdapter mAdapter;
     private LinearLayout mLl;
+    private Animation mInAnim;
+    private Animation mOutAnim;
+    private boolean mIsShowing;
 
     public enum Style {
         Center, DownSheet
@@ -49,7 +56,9 @@ public class TDialog {
         initParams(activity, style, Arrays.asList(items), title, msg, onItemClickListener);
         initViews();
         initContentView();
+        initAnim();
     }
+
 
     private void initParams(Activity activity, Style style, List<String> items, String title, String msg, onItemClickListener anInterface) {
         mActivity = activity;
@@ -195,7 +204,7 @@ public class TDialog {
                 dismiss(false);
             }
         });
-        if (mStyle == Style.DownSheet) {
+        if (mStyle == DownSheet) {
             mCancelTV = (TextView) mContentView.findViewById(R.id.downSheet_Cancel_tv);
             mCancelTV.setText("取消");
             mCancelTV.setOnClickListener(new View.OnClickListener() {
@@ -207,16 +216,65 @@ public class TDialog {
         }
     }
 
-    public void show() {
-        mDecorView.addView(mRootView);
+    private void initAnim() {
+        int inAnimRes = AnimUtil.getAnimRes(mStyle, true);
+        mInAnim = AnimationUtils.loadAnimation(mActivity, inAnimRes);
+        int outAnimRes = AnimUtil.getAnimRes(mStyle, false);
+        mOutAnim = AnimationUtils.loadAnimation(mActivity, outAnimRes);
     }
 
-    public void dismiss(boolean cancelListener) {
+    //------------------------------显示和消失处理--------------------------------------
+    public void show() {
+        if (mIsShowing) {
+            return;
+        }
+        mDecorView.addView(mRootView);
+        mIsShowing = true;
+        mContentView.startAnimation(mInAnim);
+    }
+
+    public void dismiss() {
+        dismiss(true);
+    }
+
+    public void dismissImmediately() {
+        dismissImmediately(true);
+    }
+
+    private void dismiss(final boolean cancelListener) {
+        if (!mIsShowing) {
+            return;
+        }
+        mOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                dismissImmediately(cancelListener);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mContentView.startAnimation(mOutAnim);
+    }
+
+    private void dismissImmediately(boolean cancelListener) {
+        if (!mIsShowing) {
+            return;
+        }
         mDecorView.removeView(mRootView);
+        mIsShowing = false;
         if (mDismissListener != null && cancelListener) {
             mDismissListener.onDismissClick(this);
         }
     }
+    //-------------------------------扩展设置-------------------------------------------
 
     public void setDismissListener(onDismissListener dismissListener) {
         mDismissListener = dismissListener;
@@ -226,6 +284,7 @@ public class TDialog {
         mCancelable = cancelable;
     }
 
+    //-------------------------------监听回调接口------------------------------------------------------
 
     public interface onItemClickListener {
         void onItemClick(Object object, int position);
@@ -326,4 +385,19 @@ public class TDialog {
         lp.setMargins(left1, top1, right1, bottom1);
         mContentView.setLayoutParams(lp);
     }
+
+    public void setInAnim(Animation inAnim) {
+        mInAnim = inAnim;
+        if (mOutAnim == null) {
+            mOutAnim = AnimationUtils.loadAnimation(mActivity, AnimUtil.getAnimRes(mStyle, true));
+        }
+    }
+
+    public void setOutAnim(Animation outAnim) {
+        mOutAnim = outAnim;
+        if (mOutAnim == null) {
+            mOutAnim = AnimationUtils.loadAnimation(mActivity, AnimUtil.getAnimRes(mStyle, false));
+        }
+    }
+
 }

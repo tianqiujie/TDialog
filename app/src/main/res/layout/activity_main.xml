@@ -77,5 +77,13 @@
             android:layout_marginBottom="10dp"
             android:onClick="onClick"
             android:text="更改边距"/>
+
+        <Button
+            android:id="@+id/main_btn8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:onClick="onClick"
+            android:text="更改动画"/>
     </LinearLayout>
 </ScrollView>
