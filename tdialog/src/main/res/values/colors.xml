@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--覆盖颜色-->
+    <color name="bgColor_overlay">#60000000</color>
+    <!--窗口背景颜色-->
+    <color name="bgColor_content_center">#fffefe</color>
+    <!--标题颜色-->
+    <color name="textColor_center_title">#000000</color>
+    <color name="textColor_downSheet_title">#8f8f8f</color>
+    <!--消息颜色-->
+    <color name="textColor_center_msg">#000000</color>
+    <color name="textColor_downSheet_msg">#8f8f8f</color>
+    <!--线条颜色-->
+    <color name="bgColor_divier">#d7d7db</color>
+    <!--取消按钮颜色-->
+    <color name="textColor_alert_button_cancel">#007aff</color>
+    <!--普通按钮文字颜色-->
+    <color name="textColor_alert_button_others">#007aff</color>
+    <!--点击颜色-->
+    <color name="bgColor_item_press">#e9e6e6</color>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.jkt.dialog;/**
+package com.jkt.tdialog;/**
  * Created by admin on 2017/4/3.
  */
 

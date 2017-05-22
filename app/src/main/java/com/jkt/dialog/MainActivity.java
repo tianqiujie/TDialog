@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.jkt.tdialog.TDialog;
+
 public class MainActivity extends AppCompatActivity implements TDialog.onItemClickListener, TDialog.onDismissListener {
 
     TDialog mTDialog;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
         //当条目为2时候中间弹出方式改为横向两个条目
         //中间弹出方式默认为点击外部区域可取消,底部弹出方式默认为不可取消
         //各种字体颜色大小和对应的布局margin都可以设置.每一个item也可以分别设置
+        //最后动画可以自定义,如果想取消掉自己设置的动画,将setAnim再次调用,参数传空即可.
         String[] contentArray = {"111", "22", "33"};
         switch (view.getId()) {
             case R.id.main_btn:
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                 break;
             case R.id.main_btn6:
                 mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, contentArray,
-                        "取消监听", "点击外部区域可取消", this);
+                        "消失监听", "点击外部区域可取消并监听到消失事件", this);
                 mTDialog.setDismissListener(this);
                 mTDialog.show();
                 break;
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                         "更改边距", "通过外边距更改宽度", this);
                 mTDialog.setMargin(
                         0, 0, 0, 50);
-                mTDialog.setDismissListener(this);
                 mTDialog.show();
                 break;
             case R.id.main_btn8:
@@ -83,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                         "更改动画", "自定义动画,进行设置", this);
                 mTDialog.setInAnim(AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom1));
                 mTDialog.setOutAnim(AnimationUtils.loadAnimation(this,R.anim.slide_out_bottom1));
-                mTDialog.setDismissListener(this);
                 mTDialog.show();
                 break;
 

@@ -1,4 +1,4 @@
-package com.jkt.dialog;
+package com.jkt.tdialog;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;

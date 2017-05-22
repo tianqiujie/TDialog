@@ -1,4 +1,4 @@
-package com.jkt.dialog;
+package com.jkt.tdialog;
 
 import android.app.Activity;
 import android.support.annotation.ColorInt;
@@ -19,7 +19,8 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.jkt.dialog.TDialog.Style.DownSheet;
+import static com.jkt.tdialog.TDialog.Style.DownSheet;
+
 
 /**
  * Created by 天哥哥 at 2017/5/19 9:58

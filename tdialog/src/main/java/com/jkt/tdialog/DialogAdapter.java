@@ -1,4 +1,4 @@
-package com.jkt.dialog;
+package com.jkt.tdialog;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
@@ -52,7 +52,7 @@ public class DialogAdapter extends BaseAdapter<String> {
             contentTV.setTextSize(mSizeMap.get(position));
         }
         if (position == getItemCount() - 1)
-            contentTV.setBackgroundResource(R.drawable.bg_bottom);
+            contentTV.setBackgroundResource(R.drawable.bg_item_bottom);
         else contentTV.setBackgroundResource(R.drawable.bg_item);
         String text = mList.get(position);
         contentTV.setText(TextUtils.isEmpty(text) ? "" : text);

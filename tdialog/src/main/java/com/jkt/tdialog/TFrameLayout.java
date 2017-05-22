@@ -1,4 +1,4 @@
-package com.jkt.dialog;
+package com.jkt.tdialog;
 
 import android.content.Context;
 import android.util.AttributeSet;
