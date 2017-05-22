@@ -3,8 +3,12 @@ package com.jkt.dialog;
 import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by 天哥哥 at 2017/5/19 14:06
@@ -15,6 +19,8 @@ public class DialogAdapter extends BaseAdapter<String> {
     @ColorInt
     int mTextColor;
     private int mTextSize;
+    private Map<Integer, Integer> mColorMap;
+    private Map<Integer, Integer> mSizeMap;
 
     public DialogAdapter(Context context) {
         super(context);
@@ -35,8 +41,15 @@ public class DialogAdapter extends BaseAdapter<String> {
         if (mTextColor != 0) {
             contentTV.setTextColor(mTextColor);
         }
+        if (mColorMap != null && mColorMap.get(position) != null) {
+            Log.i("itemcolor",position+"            "+mColorMap.get(position));
+            contentTV.setTextColor(mColorMap.get(position));
+        }
         if (mTextSize != 0) {
             contentTV.setTextSize(mTextSize);
+        }
+        if (mSizeMap != null && mSizeMap.get(position) != null) {
+            contentTV.setTextSize(mSizeMap.get(position));
         }
         if (position == getItemCount() - 1)
             contentTV.setBackgroundResource(R.drawable.bg_bottom);
@@ -65,6 +78,22 @@ public class DialogAdapter extends BaseAdapter<String> {
 
     public void setTextSize(int textSize) {
         mTextSize = textSize;
+        notifyDataSetChanged();
+    }
+
+    public void setTextColorAt(int position, int textColor) {
+        if (mColorMap == null) {
+            mColorMap = new HashMap<>();
+        }
+        mColorMap.put(position, textColor);
+        notifyDataSetChanged();
+    }
+
+    public void setTextSizeAt(int position, int textSize) {
+        if (mSizeMap == null) {
+            mSizeMap = new HashMap<>();
+        }
+        mSizeMap.put(position, textSize);
         notifyDataSetChanged();
     }
 }

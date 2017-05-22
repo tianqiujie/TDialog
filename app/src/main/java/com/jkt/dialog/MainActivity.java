@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
     public void onClick(View view) {
         //当条目为2时候中间弹出方式改为横向两个条目
         //中间弹出方式默认为点击外部区域可取消,底部弹出方式默认为不可取消
+        //各种字体颜色大小和对应的布局margin都可以设置.每一个item也可以分别设置
         String[] contentArray = {"111", "22", "33"};
         switch (view.getId()) {
             case R.id.main_btn:
@@ -44,18 +45,22 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                 mTDialog.show();
                 break;
             case R.id.main_btn4:
-                mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, contentArray,
+                String[] array4 = {"取消", "确认"};
+                mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, array4,
                         "自定义样式,中间弹出", "点击外部区域可取消", this);
-                mTDialog.setContentColor(getResources().getColor(R.color.bgColor_overlay));
-                mTDialog.setMsgColor(getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColor(getResources().getColor(R.color.bgColor_overlay));
+                mTDialog.setMsgTextColor(getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColorAt(0,getResources().getColor(R.color.colorPrimary));
+                mTDialog.setItemTextColorAt(2,getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColorAt(10,getResources().getColor(R.color.colorAccent));
                 mTDialog.show();
                 break;
             case R.id.main_btn5:
                 mTDialog = new TDialog(MainActivity.this, TDialog.Style.DownSheet, contentArray,
                         "自定义样式,底部弹出", "点击外部区域不可取消", this);
-                mTDialog.setTitleColor(getResources().getColor(R.color.colorAccent));
-                mTDialog.setContentColor(getResources().getColor(R.color.colorAccent));
-                mTDialog.setMsgColor(getResources().getColor(R.color.bgColor_overlay));
+                mTDialog.setTitleTextColor(getResources().getColor(R.color.colorAccent));
+                mTDialog.setItemTextColor(getResources().getColor(R.color.colorAccent));
+                mTDialog.setMsgTextColor(getResources().getColor(R.color.bgColor_overlay));
                 mTDialog.show();
                 break;
             case R.id.main_btn6:
@@ -65,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                 mTDialog.show();
                 break;
             case R.id.main_btn7:
-                mTDialog = new TDialog(MainActivity.this, TDialog.Style.DownSheet, contentArray,
-                        "取消监听", "点击外部区域可取消", this);
-                mTDialog.setCancelable(true);
+                mTDialog = new TDialog(MainActivity.this, TDialog.Style.Center, contentArray,
+                        "更改边距", "通过外边距更改宽度", this);
+                mTDialog.setMargin(0,0,0,50);
                 mTDialog.setDismissListener(this);
                 mTDialog.show();
                 break;

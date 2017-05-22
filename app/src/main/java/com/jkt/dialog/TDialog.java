@@ -24,6 +24,7 @@ public class TDialog {
 
     private TextView mCancelTV;
     private DialogAdapter mAdapter;
+    private LinearLayout mLl;
 
     public enum Style {
         Center, DownSheet
@@ -36,7 +37,7 @@ public class TDialog {
     private TextView mMsgTV;
     private Activity mActivity;
     private Style mStyle;
-    private List<String> mList;
+    private List<String> mItems;
     private String mTitle;
     private String mMsg;
     private onItemClickListener mItemClickListener;
@@ -44,16 +45,16 @@ public class TDialog {
     private boolean mCancelable;
 
 
-    public TDialog(@NonNull Activity activity, Style style, String[] contentArray, String title, String msg, onItemClickListener onItemClickListener) {
-        initParams(activity, style, Arrays.asList(contentArray), title, msg, onItemClickListener);
+    public TDialog(@NonNull Activity activity, Style style, String[] items, String title, String msg, onItemClickListener onItemClickListener) {
+        initParams(activity, style, Arrays.asList(items), title, msg, onItemClickListener);
         initViews();
         initContentView();
     }
 
-    private void initParams(Activity activity, Style style, List<String> contentList, String title, String msg, onItemClickListener anInterface) {
+    private void initParams(Activity activity, Style style, List<String> items, String title, String msg, onItemClickListener anInterface) {
         mActivity = activity;
         mStyle = style == null ? Style.Center : style;
-        mList = contentList;
+        mItems = items;
         mTitle = title;
         mMsg = msg;
         mItemClickListener = anInterface;
@@ -132,11 +133,11 @@ public class TDialog {
 
     private void initRecyclerView(@IdRes int rvId) {
         RecyclerView rv = (RecyclerView) mRootView.findViewById(rvId);
-        LinearLayout ll = (LinearLayout) mRootView.findViewById(R.id.center_content_ll);
-        if (mStyle.equals(Style.Center) && mList != null && mList.size() == 2) {
-            twoItemWork(rv, ll);
+        mLl = (LinearLayout) mRootView.findViewById(R.id.center_content_ll);
+        if (mStyle.equals(Style.Center) && mItems != null && mItems.size() == 2) {
+            twoItemWork(rv, mLl);
         } else {
-            otherItemWork(rv, ll);
+            otherItemWork(rv, mLl);
         }
     }
 
@@ -147,7 +148,7 @@ public class TDialog {
             View item = mActivity.getLayoutInflater().inflate(R.layout.dialog_item, null);
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) item.getLayoutParams();
             TextView textView = (TextView) item.findViewById(R.id.dialog_item_tv);
-            textView.setText(mList.get(i));
+            textView.setText(mItems.get(i));
             ll.addView(item, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             if (i == 0) {
@@ -182,7 +183,7 @@ public class TDialog {
         }
         rv.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
         mAdapter = new DialogAdapter(mActivity);
-        mAdapter.setList(mList);
+        mAdapter.setList(mItems);
         rv.setLayoutManager(new LinearLayoutManager(mActivity));
         rv.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new DialogAdapter.onItemClickListener() {
@@ -212,7 +213,7 @@ public class TDialog {
 
     public void dismiss(boolean cancelListener) {
         mDecorView.removeView(mRootView);
-        if (mDismissListener != null&&cancelListener) {
+        if (mDismissListener != null && cancelListener) {
             mDismissListener.onDismissClick(this);
         }
     }
@@ -236,30 +237,25 @@ public class TDialog {
 
     //--------------------------------样式扩展--------------------------------------------------------
 
-    public void setTitleColor(@ColorInt int color) {
+    public void setTitleTextColor(@ColorInt int color) {
         mTitleTV.setTextColor(color);
     }
-    public void setTitleSize(int dp) {
+
+    public void setTitleTextSize(int dp) {
         mTitleTV.setTextSize(dp);
     }
-    public void setMsgColor(@ColorInt int color) {
+
+    public void setMsgTextColor(@ColorInt int color) {
         mMsgTV.setTextColor(color);
     }
-    public void setMsgSize(int dp) {
+
+    public void setMsgTextSize(int dp) {
         mMsgTV.setTextSize(dp);
     }
-    public void setContentColor(@ColorInt int color) {
-        if (mAdapter!=null) {
-            mAdapter.setTextColor(color);
-        }
-    }
-    public void setContentSize(int dp) {
-        if (mAdapter!=null) {
-            mAdapter.setTextSize(dp);
-        }
-    }
+
+
     public void setCancelTextColor(@ColorInt int color) {
-        if (mCancelTV!=null) {
+        if (mCancelTV != null) {
             mCancelTV.setTextColor(color);
         }
     }
@@ -270,4 +266,64 @@ public class TDialog {
         }
     }
 
+    public void setItemTextColor(@ColorInt int color) {
+        if (mAdapter != null) {
+            mAdapter.setTextColor(color);
+        }
+        if (mLl != null && mLl.getChildCount() == 3) {
+            ((TextView) ((LinearLayout) mLl.getChildAt(0)).getChildAt(1)).setTextColor(color);
+            ((TextView) ((LinearLayout) mLl.getChildAt(2)).getChildAt(1)).setTextColor(color);
+        }
+    }
+
+    public void setItemTextSize(int dp) {
+        if (mAdapter != null) {
+            mAdapter.setTextSize(dp);
+        }
+        if (mLl != null && mLl.getChildCount() == 3) {
+            ((TextView) ((LinearLayout) mLl.getChildAt(0)).getChildAt(1)).setTextSize(dp);
+            ((TextView) ((LinearLayout) mLl.getChildAt(2)).getChildAt(1)).setTextSize(dp);
+        }
+    }
+
+    public void setItemTextColorAt(int position, @ColorInt int color) {
+        if (mAdapter != null) {
+            mAdapter.setTextColorAt(position, color);
+        }
+        if (mLl != null && mLl.getChildCount() == 3 && position <= 1) {
+            if (position == 1) {
+                position++;
+            }
+            ((TextView) ((LinearLayout) mLl.getChildAt(position)).getChildAt(1)).setTextColor(color);
+
+        }
+    }
+
+    public void setItemTextSizeAt(int position, int dp) {
+        if (mAdapter != null) {
+            mAdapter.setTextSizeAt(position, dp);
+        }
+        if (mLl != null && mLl.getChildCount() == 3 && position <= 2) {
+            ((TextView) ((LinearLayout) mLl.getChildAt(position)).getChildAt(1)).setTextSize(dp);
+        }
+    }
+
+    public void setMargin(int left, int top, int right, int bottom) {
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+        int left1 = DensityUtil.dp2px(mActivity, left);
+        int top1 = DensityUtil.dp2px(mActivity, top);
+        int right1 = DensityUtil.dp2px(mActivity, right);
+        int bottom1 = DensityUtil.dp2px(mActivity, bottom);
+        switch (mStyle) {
+            case Center:
+                lp.gravity = Gravity.CENTER;
+                break;
+            case DownSheet:
+                lp.gravity = Gravity.BOTTOM;
+                break;
+        }
+        lp.setMargins(left1, top1, right1, bottom1);
+        mContentView.setLayoutParams(lp);
+    }
 }
