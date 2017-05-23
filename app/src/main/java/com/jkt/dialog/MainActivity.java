@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
                         "自定义样式,中间弹出", "点击外部区域可取消", this);
                 mTDialog.setItemTextColor(getResources().getColor(R.color.bgColor_overlay));
                 mTDialog.setMsgTextColor(getResources().getColor(R.color.colorAccent));
-                mTDialog.setItemTextColorAt(0, getResources().getColor(R.color.colorPrimary));
+                mTDialog.setItemTextColorAt(1, getResources().getColor(R.color.colorPrimary));
                 mTDialog.setItemTextColorAt(2, getResources().getColor(R.color.colorAccent));
                 mTDialog.setItemTextColorAt(10, getResources().getColor(R.color.colorAccent));
                 mTDialog.show();

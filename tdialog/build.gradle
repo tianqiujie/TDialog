@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -30,4 +30,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.0.1'
 
+}
+publish {
+    userOrg = 'jkt'
+    groupId = 'com.jkt'
+    artifactId = 'tdialog'
+    publishVersion = '1.0.0'
+    desc = 'Oh hi, this is a nice dialog for an android project, right?'
+    website = 'https://github.com/HoldMyOwn'
 }
