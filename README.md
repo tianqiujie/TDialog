@@ -25,6 +25,29 @@
       mTDialog.setOutAnim(AnimationUtils.loadAnimation(this,R.anim.slide_out_bottom1))
       //---------------
       mTDialog.show();
+###   事件回调:
+<pre>
+    //创建对象必须实现item点击监听,第一个参数是对象,区分哪个TDialog,
+    //第二个参数是点击的位置,位置就是创建对象时候传入数组的下标. 
+    @Override
+    public void onItemClick(Object object, int position) {
+        if (object == mTDialog) {
+            Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+            if (position == 0) {
+                mTDialog.dismissImmediately();
+            }
+        }
+    }
+    
+    //可选监听,在Tdialog消失的时候触发,如果是点击Item则只触发itemClick回调,不会触发消失回调
+    //当点击对话框内容外区域,如果设置监听并且控件是点击外边区域可取消类型.那么触发回调.
+    @Override
+    public void onDismissClick(Object object) {
+        if (object == mTDialog) {
+            Toast.makeText(this, "消失", Toast.LENGTH_SHORT).show();
+        }
+    }
+</pre> 
 ###   具体细节用法,下载查看Demo
 ###   模板依赖:&nbsp;&nbsp;项目里面的TDialog模板(可更加灵活扩展)
 ###   gradle依赖:&nbsp;&nbsp;&nbsp;compile&nbsp;'com.jkt:tdialog:1.0.0'
