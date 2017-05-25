@@ -34,6 +34,8 @@
         if (object == mTDialog) {
             Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
             if (position == 0) {
+            //任何item点击都会正常消失TDialog对象(内部后续调用dismiss方法),dismissImmediately方法
+            //则会迅速消失掉TDialog对象,区别:dismiss()方法有消失动画,动画完毕之后真正消失
                 mTDialog.dismissImmediately();
             }
         }
