@@ -235,11 +235,11 @@ public class TDialog {
     }
 
     public void dismiss() {
-        dismiss(true);
+        dismiss(false);
     }
 
     public void dismissImmediately() {
-        dismissImmediately(true);
+        dismissImmediately(false);
     }
 
     private void dismiss(final boolean cancelListener) {

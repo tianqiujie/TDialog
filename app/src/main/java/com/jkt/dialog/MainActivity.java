@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
         if (object == mTDialog) {
             Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
             if (position == 0) {
+                //立即消失对话框（dismiss在动画执行完毕后消失）
                 mTDialog.dismissImmediately();
             }
         }
