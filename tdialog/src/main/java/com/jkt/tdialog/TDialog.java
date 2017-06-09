@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -77,12 +78,14 @@ public class TDialog {
     private void initViews() {
         mDecorView = (ViewGroup) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         mRootView = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.dialog_root, mDecorView, false);
-        mRootView.setOnClickListener(new View.OnClickListener() {
+        mRootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (mCancelable) {
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if (mCancelable&&action==MotionEvent.ACTION_UP) {
                     dismiss(true);
                 }
+                return true;
             }
         });
     }
@@ -404,6 +407,7 @@ public class TDialog {
             mOutAnim = AnimationUtils.loadAnimation(mActivity, AnimUtil.getAnimRes(mStyle, false));
         }
     }
+
 
     //-------------------------------------addView--------------------------------
     public void addView(View view) {

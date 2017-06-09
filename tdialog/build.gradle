@@ -35,7 +35,7 @@ publish {
     userOrg = 'jkt'
     groupId = 'com.jkt'
     artifactId = 'tdialog'
-    publishVersion = '1.0.3'
+    publishVersion = '1.0.4'
     desc = 'Oh hi, this is a nice dialog for an android project, right?'
     website = 'https://github.com/HoldMyOwn'
 }
