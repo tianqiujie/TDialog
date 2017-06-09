@@ -33,6 +33,8 @@ public class TDialog {
     private Animation mInAnim;
     private Animation mOutAnim;
     private boolean mIsShowing;
+    private LinearLayout mCenterLL;
+    private LinearLayout mDownSheetLL;
 
     public enum Style {
         Center, DownSheet
@@ -122,6 +124,7 @@ public class TDialog {
 
     private void initCenterView() {
         mContentView = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.dialog_content_conter, mContentView);
+        mCenterLL = (LinearLayout) mContentView.findViewById(R.id.center_ll);
         initHeaderView(R.id.center_title_tv, R.id.center_msg_tv);
         initRecyclerView(R.id.center_content_rv);
     }
@@ -129,6 +132,7 @@ public class TDialog {
 
     private void initDownSheetView() {
         mContentView = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.dialog_content_downsheet, mContentView);
+        mDownSheetLL = (LinearLayout) mContentView.findViewById(R.id.downSheet_ll);
         initHeaderView(R.id.downSheet_title_tv, R.id.downSheet_msg_tv);
         initRecyclerView(R.id.downSheet_content_rv);
     }
@@ -398,6 +402,22 @@ public class TDialog {
         mOutAnim = outAnim;
         if (mOutAnim == null) {
             mOutAnim = AnimationUtils.loadAnimation(mActivity, AnimUtil.getAnimRes(mStyle, false));
+        }
+    }
+
+    //-------------------------------------addView--------------------------------
+    public void addView(View view) {
+        if (view == null) {
+            return;
+        }
+        view.setBackgroundResource(R.drawable.bg_item);
+        switch (mStyle) {
+            case Center:
+                mCenterLL.addView(view, 2, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                break;
+            case DownSheet:
+                mDownSheetLL.addView(view, 2, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                break;
         }
     }
 

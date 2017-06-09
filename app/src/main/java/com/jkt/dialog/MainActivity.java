@@ -1,9 +1,13 @@
 package com.jkt.dialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jkt.tdialog.TDialog;
@@ -83,8 +87,23 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
             case R.id.main_btn8:
                 mTDialog = new TDialog(MainActivity.this, TDialog.Style.DownSheet, contentArray,
                         "更改动画", "自定义动画,进行设置", this);
-                mTDialog.setInAnim(AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom1));
-                mTDialog.setOutAnim(AnimationUtils.loadAnimation(this,R.anim.slide_out_bottom1));
+                mTDialog.setInAnim(AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom1));
+                mTDialog.setOutAnim(AnimationUtils.loadAnimation(this, R.anim.slide_out_bottom1));
+                mTDialog.show();
+                break;
+            case R.id.main_btn9:
+                String[] array9 = {"取消", "确认"};
+                View inflate = LayoutInflater.from(this).inflate(R.layout.alertext_from, null);
+                final EditText et = (EditText) inflate.findViewById(R.id.from_et);
+                mTDialog = new TDialog(this, TDialog.Style.Center, array9, "添加View", "一行代码搞定"
+                        , new TDialog.onItemClickListener() {
+                    @Override
+                    public void onItemClick(Object object, int position) {
+                            closeSoftInput(et);
+                    }
+                });
+                mTDialog.setItemTextColorAt(0, getResources().getColor(R.color.bgColor_overlay));
+                mTDialog.addView(inflate);
                 mTDialog.show();
                 break;
 
@@ -106,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements TDialog.onItemCli
     public void onDismissClick(Object object) {
         if (object == mTDialog) {
             Toast.makeText(this, "消失", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void closeSoftInput(EditText editText) {
+        InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (manager.isActive()) {
+            manager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         }
     }
 }

@@ -52,5 +52,5 @@
 </pre> 
 ###   具体细节用法,下载查看Demo
 ###   模板依赖:&nbsp;&nbsp;项目里面的TDialog模板(可更加灵活扩展)
-###   gradle依赖:&nbsp;&nbsp;&nbsp;compile&nbsp;'com.jkt:tdialog:1.0.2'
+###   gradle依赖:&nbsp;&nbsp;&nbsp;compile&nbsp;'com.jkt:tdialog:1.0.3'
 
