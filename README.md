@@ -60,12 +60,12 @@
     </tr>
 </table>
 <pre>
-    //一行代码添加View,软键盘事件动态调整对话框位置
+    //一行代码添加View,软键盘事件可通过设置marginBottom属性兼容
     View inflate = LayoutInflater.from(this).inflate(R.layout.alertext_from, null);
     mTDialog.addView(inflate);
 </pre>
 
 ###   具体细节用法,下载查看Demo
 ###   模板依赖:&nbsp;&nbsp;项目里面的tdialog模板(可更加灵活扩展)
-###   gradle依赖:&nbsp;&nbsp;&nbsp;compile&nbsp;'com.jkt:tdialog:1.0.5'
+###   gradle依赖:&nbsp;&nbsp;&nbsp;compile&nbsp;'com.jkt:tdialog:1.0.6'
 

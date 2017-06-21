@@ -82,7 +82,7 @@ public class TDialog {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
-                if (mCancelable&&action==MotionEvent.ACTION_UP) {
+                if (mCancelable && action == MotionEvent.ACTION_UP) {
                     dismiss(true);
                 }
                 return true;
@@ -375,13 +375,19 @@ public class TDialog {
         }
     }
 
-    public void setMargin(int left, int top, int right, int bottom) {
+    /**
+     * @param leftDP   the unit is dp
+     * @param topDp    the unit is dp
+     * @param rightDp  the unit is dp
+     * @param bottomDp the unit is dp
+     */
+    public void setMargin(int leftDP, int topDp, int rightDp, int bottomDp) {
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
-        int left1 = DensityUtil.dp2px(mActivity, left);
-        int top1 = DensityUtil.dp2px(mActivity, top);
-        int right1 = DensityUtil.dp2px(mActivity, right);
-        int bottom1 = DensityUtil.dp2px(mActivity, bottom);
+        int left = DensityUtil.dp2px(mActivity, leftDP);
+        int top = DensityUtil.dp2px(mActivity, topDp);
+        int right = DensityUtil.dp2px(mActivity, rightDp);
+        int bottom = DensityUtil.dp2px(mActivity, bottomDp);
         switch (mStyle) {
             case Center:
                 lp.gravity = Gravity.CENTER;
@@ -390,10 +396,62 @@ public class TDialog {
                 lp.gravity = Gravity.BOTTOM;
                 break;
         }
-        lp.setMargins(left1, top1, right1, bottom1);
+        lp.setMargins(left, top, right, bottom);
         mContentView.setLayoutParams(lp);
     }
 
+    /**
+     * @param bottomDp the unit is dp
+     */
+    public void setMarginBottom(int bottomDp) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContentView.getLayoutParams();
+        int bottom = DensityUtil.dp2px(mActivity, bottomDp);
+        switch (mStyle) {
+            case Center:
+                lp.gravity = Gravity.CENTER;
+                break;
+            case DownSheet:
+                lp.gravity = Gravity.BOTTOM;
+                break;
+        }
+        lp.setMargins(lp.leftMargin, lp.topMargin, lp.rightMargin, bottom);
+        mContentView.setLayoutParams(lp);
+    }
+
+    /**
+     * @param topDp the unit is dp
+     */
+    public void setMarginTop(int topDp) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContentView.getLayoutParams();
+        int top = DensityUtil.dp2px(mActivity, topDp);
+        switch (mStyle) {
+            case Center:
+                lp.gravity = Gravity.CENTER;
+                break;
+            case DownSheet:
+                lp.gravity = Gravity.BOTTOM;
+                break;
+        }
+        lp.setMargins(lp.leftMargin, top, lp.rightMargin, lp.bottomMargin);
+        mContentView.setLayoutParams(lp);
+    }
+    /**
+     * @param specialDp the unit is dp
+     */
+    public void setMarginLeftAndRight(int specialDp) {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mContentView.getLayoutParams();
+        int special = DensityUtil.dp2px(mActivity, specialDp);
+        switch (mStyle) {
+            case Center:
+                lp.gravity = Gravity.CENTER;
+                break;
+            case DownSheet:
+                lp.gravity = Gravity.BOTTOM;
+                break;
+        }
+        lp.setMargins(special, lp.topMargin, special, lp.bottomMargin);
+        mContentView.setLayoutParams(lp);
+    }
     public void setInAnim(Animation inAnim) {
         mInAnim = inAnim;
         if (mOutAnim == null) {
