@@ -3,7 +3,7 @@
   使用简单.一行代码设置参数搞定,然后实现对应监听.监听参数包括两个.一个是对象(在当前类实现接口方法的时候,区分不同的TDialog对象).
   另外一个是位置索引(通过下标区分第几个item被点击).<br>
 ###  预览图:
-  <img width="350"  src="https://github.com/HoldMyOwn/TDialog/blob/master/preview/all.gif" /><br>
+  <img width="350"  src="https://github.com/HoldMyOwn/TDialog/blob/master/preview/dialog-6.gif" /><br>
 ###  用法:
 <pre>
        //参数:1:activity:需要获取窗口以及作为上下文参数
