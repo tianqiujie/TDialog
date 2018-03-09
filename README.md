@@ -1,3 +1,4 @@
+[![](https://www.jitpack.io/v/tianqiujie/TDialog.svg)](https://www.jitpack.io/#tianqiujie/TDialog)
 # TDialog
 ###  Hello,这是一个仿IOS的Android自定义Dialog
   使用简单.一行代码设置参数搞定,然后实现对应监听.监听参数包括两个.一个是对象(在当前类实现接口方法的时候,区分不同的TDialog对象).
